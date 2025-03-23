@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Container, Heading, Box, Flex, Spinner, Text } from '@chakra-ui/react';
+import { useColorModeValue } from '../components/ui/color-mode';
+import { useNavigate } from 'react-router-dom';
 import { getTopPlayers } from '../services/tennisDataService';
 import { Player } from '../types';
+import PlayerCarousel from '../components/player/PlayerCarousel';
 
 const HomePage = () => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+  
+  const headingColor = useColorModeValue('blue.600', 'blue.300');
 
   useEffect(() => {
     const loadPlayers = async () => {
@@ -23,6 +29,10 @@ const HomePage = () => {
     loadPlayers();
   }, []);
 
+  const handlePlayerClick = (playerId: string) => {
+    navigate(`/player/${playerId}`);
+  };
+
   return (
     <Container maxW="container.xl">
       {isLoading ? (
@@ -32,20 +42,24 @@ const HomePage = () => {
         </Flex>
       ) : (
         <Box>
-          <Heading as="h2" size="lg" mb={6}>
-            Top Tennis Players
-          </Heading>
-          <Flex wrap="wrap">
-            {players.map((player) => (
-              <Box key={player.id} w="100%" p={2} mb={4}>
-                <Heading as="h3" size="md" mb={2}>
-                  {player.name}
-                </Heading>
-                <Text>Country: {player.country}</Text>
-                <Text>Ranking: {player.ranking}</Text>
-              </Box>
-            ))}
+          <Flex direction="column" align="center" mb={8}>
+            <Heading as="h1" size="xl" mb={2} color={headingColor}>
+              Tennis Player Stats
+            </Heading>
+            <Text fontSize="lg" textAlign="center" maxW="700px">
+              Browse through the top tennis players and click on a player to see their detailed statistics.
+            </Text>
           </Flex>
+          
+          <Box mb={12}>
+            <Heading as="h2" size="lg" mb={6}>
+              Top Tennis Players
+            </Heading>
+            <PlayerCarousel 
+              players={players} 
+              onPlayerClick={handlePlayerClick} 
+            />
+          </Box>
         </Box>
       )}
     </Container>
