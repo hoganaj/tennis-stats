@@ -44,17 +44,13 @@ const HomePage = () => {
         <Box>
           <Flex direction="column" align="center" mb={8}>
             <Heading as="h1" size="xl" mb={2} color={headingColor}>
-              Tennis Player Stats
+              ATP Player Stats
             </Heading>
-            <Text fontSize="lg" textAlign="center" maxW="700px">
-              Browse through the top tennis players and click on a player to see their detailed statistics.
+            <Text fontSize="lg" textAlign="center" maxW="800px">
+              Browse through the top men's tennis players and click on a player to see their detailed statistics.
             </Text>
           </Flex>
-          
           <Box mb={12}>
-            <Heading as="h2" size="lg" mb={6}>
-              Top Tennis Players
-            </Heading>
             <PlayerCarousel 
               players={players} 
               onPlayerClick={handlePlayerClick} 
