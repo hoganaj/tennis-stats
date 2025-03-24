@@ -4,6 +4,7 @@ import { Container, Box, Heading, Spinner, Flex, Text, Image, VStack, HStack } f
 import { getPlayerById, getPlayerMatches } from '../services/tennisDataService';
 import { Player, MatchResult } from '../types';
 import { PlayerAnalytics } from '../components/player/PlayerAnalytics';
+import { getFlagUrlFromIocCode } from '../utils/countryUtils';
 
 const PlayerDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -74,7 +75,18 @@ const PlayerDetailPage = () => {
             {player.country && (
               <HStack>
                 <Text fontSize="lg" fontWeight="medium">Country:</Text>
-                <Text fontSize="lg">{player.country}</Text>
+                <HStack gap={1}>
+                  <Image 
+                      src={getFlagUrlFromIocCode(player.country)}
+                      alt={`${player.country} flag`}
+                      height="auto"
+                      objectFit="contain"
+                      borderRadius="sm"
+                      border="1px solid"
+                      borderColor="gray.200"
+                    />
+                  <Text fontSize="lg">{player.country}</Text>
+                </HStack>
               </HStack>
             )}
           </VStack>

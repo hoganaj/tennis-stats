@@ -1,6 +1,7 @@
-import { Box, Image, Text, Flex, Badge } from '@chakra-ui/react';
+import { Box, Image, Text, Flex, Badge, HStack } from '@chakra-ui/react';
 import { useColorModeValue } from '../ui/color-mode';
 import { Player } from '../../types';
+import { getFlagUrlFromIocCode } from '../../utils/countryUtils';
 
 interface PlayerCardProps {
   player: Player;
@@ -69,9 +70,20 @@ const PlayerCard = ({ player, onClick }: PlayerCardProps) => {
         </Text>
         
         <Flex alignItems="center" justifyContent="space-between">
-          <Text fontSize="sm" color="gray.500">
-            {player.country}
-          </Text>
+          <HStack gap={1}>
+            <Text fontSize="sm" color="gray.500">
+              {player.country}
+            </Text>
+            <Image 
+              src={getFlagUrlFromIocCode(player.country)}
+              alt={`${player.country} flag`}
+              height="auto"
+              objectFit="contain"
+              borderRadius="sm"
+              border="1px solid"
+              borderColor="gray.200"
+            />
+          </HStack>
           <Flex>
             <Badge colorScheme="blue" mr={1}>
               W: {player.stats.wins}
