@@ -52,7 +52,8 @@ export async function getPlayers(): Promise<Player[]> {
         country: match.winner_ioc || 'Unknown',
         ranking: parseInt(match.winner_rank) || 9999,
         rankingChange: 0, // calculate later
-        imageUrl: `/images/players/${match.winner_id}.jpg`, // add images later
+        imageUrl: `/images/players/${match.winner_id}.jpg`,
+        headImageUrl: `/images/head/${match.winner_id}.png`,
         stats: {
           wins: 0,
           losses: 0,
@@ -75,6 +76,7 @@ export async function getPlayers(): Promise<Player[]> {
         ranking: parseInt(match.loser_rank) || 9999,
         rankingChange: 0,
         imageUrl: `/images/players/${match.loser_id}.jpg`,
+        headImageUrl: `/images/head/${match.loser_id}.png`,
         stats: {
           wins: 0,
           losses: 0,

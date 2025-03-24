@@ -4,6 +4,7 @@ export interface Player {
   name: string;
   country: string;
   imageUrl?: string;
+  headImageUrl?: string;
   ranking: number;
   rankingChange: number;
   stats: {
