@@ -4,8 +4,8 @@ import { Outlet } from 'react-router-dom';
 const MainLayout = () => {
   
   return (
-    <Box minH="100vh">
-      <Box as="main" py={8}>
+    <Box>
+      <Box as="main" py={4}>
         <Outlet />
       </Box>
     </Box>
