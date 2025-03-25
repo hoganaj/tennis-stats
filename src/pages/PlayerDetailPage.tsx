@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Box, Heading, Spinner, Flex, Text, Image, VStack, HStack } from '@chakra-ui/react';
+import { Container, Box, Heading, Spinner, Flex, Text, Image, VStack, HStack, Center } from '@chakra-ui/react';
 import { getPlayerById, getPlayerMatches } from '../services/tennisDataService';
 import { Player, MatchResult } from '../types';
 import { PlayerAnalytics } from '../components/player/PlayerAnalytics';
@@ -60,16 +60,16 @@ const PlayerDetailPage = () => {
     <Container maxW="container.xl">
       <Box py={6}>
         <Flex direction={{ base: "column", md: "row" }} align="center" mb={8} gap={6}>
-          <Box minW={{ base: "full", md: "200px" }} textAlign={{ base: "center", md: "left" }}>
+        <Center w={{ base: "full", md: "auto" }} minW={{ md: "200px" }}>
             <Image
               src={player.headImageUrl}
               alt={player.name}
               borderRadius="full"
-              boxSize="200px"
+              boxSize={{ base: "180px", sm: "200px" }}
               objectFit="cover"
               boxShadow="lg"
             />
-          </Box>
+          </Center>
           <VStack align={{ base: "center", md: "flex-start" }} gap={3} flex="1">
             <Heading as="h1" size="2xl">{player.name}</Heading>
             {player.country && (
