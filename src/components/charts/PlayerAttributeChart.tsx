@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
-import { Box, Text, Select, Flex, Portal, createListCollection } from '@chakra-ui/react';
+import { Box, Text, Select, Flex, Portal, createListCollection, useBreakpointValue } from '@chakra-ui/react';
 import { Player } from '../../types';
 
 interface PlayerAttributeChartProps {
@@ -36,18 +36,29 @@ const generateRandomAttributes = (playerId: string) => {
     return Math.round(val);
   };
   
-  return [
-    { attribute: 'Serve', value: randomValue(0), fullMark: 100 },
-    { attribute: 'Return', value: randomValue(1), fullMark: 100 },
-    { attribute: 'Forehand', value: randomValue(2), fullMark: 100 },
-    { attribute: 'Backhand', value: randomValue(3), fullMark: 100 },
-    { attribute: 'Net Game', value: randomValue(4), fullMark: 100 },
-    { attribute: 'Movement', value: randomValue(5), fullMark: 100 },
-  ];
+  // Create shortened labels for mobile displays
+  const getAttributes = () => {
+    const isMobile = window.innerWidth < 480;
+    
+    return [
+      { attribute: 'Serve', value: randomValue(0), fullMark: 100 },
+      { attribute: isMobile ? 'Rtrn' : 'Return', value: randomValue(1), fullMark: 100 },
+      { attribute: isMobile ? 'FH' : 'Forehand', value: randomValue(2), fullMark: 100 },
+      { attribute: isMobile ? 'BH' : 'Backhand', value: randomValue(3), fullMark: 100 },
+      { attribute: isMobile ? 'Net' : 'Net Game', value: randomValue(4), fullMark: 100 },
+      { attribute: isMobile ? 'Move' : 'Movement', value: randomValue(5), fullMark: 100 },
+    ];
+  };
+  
+  return getAttributes();
 };
 
 export const PlayerAttributeChart: React.FC<PlayerAttributeChartProps> = ({ player, topPlayers }) => {
   const [comparisonPlayerId, setComparisonPlayerId] = useState<string[]>([]);
+  
+  // Responsive chart settings but maintain a good size for the chart
+  const chartHeight = useBreakpointValue({ base: 350, sm: 380, md: 400 });
+  const outerRadius = useBreakpointValue({ base: "65%", sm: "70%", md: "75%" });
   
   // Filter out the current player from the comparison options
   const availablePlayers = topPlayers.filter(p => p.id !== player.id);
@@ -132,39 +143,50 @@ export const PlayerAttributeChart: React.FC<PlayerAttributeChartProps> = ({ play
       </Box>
       
       <Flex justify="center">
-        <Text fontSize="sm" mb={4} color="gray.500" textAlign="center">
+        <Text fontSize="sm" color="gray.500" textAlign="center">
           Attribute ratings are generated randomly for demonstration purposes.
         </Text>
       </Flex>
       
-      <ResponsiveContainer width="100%" height={400}>
-        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
-          <PolarGrid />
-          <PolarAngleAxis dataKey="attribute" />
-          <PolarRadiusAxis angle={30} domain={[0, 100]} />
-          
-          <Radar
-            name={player.name}
-            dataKey={player.name}
-            stroke={playerColor}
-            fill={playerColor}
-            fillOpacity={0.6}
-          />
-          
-          {comparisonPlayer && (
+      <Box px={{ base: 1, sm: 3 }} mt={{ base: -10, sm: 0 }}>
+        <ResponsiveContainer width="100%" height={chartHeight}>
+          <RadarChart 
+            cx="50%" 
+            cy="50%" 
+            outerRadius={outerRadius} 
+            data={chartData}
+            margin={{ top: 10, right: 30, bottom: 10, left: 30 }}
+          >
+            <PolarGrid />
+            <PolarAngleAxis 
+              dataKey="attribute"
+              tick={{ fontSize: useBreakpointValue({ base: 12, sm: 14 }) }}
+            />
+            <PolarRadiusAxis angle={30} domain={[0, 100]} />
+            
             <Radar
-              name={comparisonPlayer.name}
-              dataKey={comparisonPlayer.name}
-              stroke={comparisonColor}
-              fill={comparisonColor}
+              name={player.name}
+              dataKey={player.name}
+              stroke={playerColor}
+              fill={playerColor}
               fillOpacity={0.6}
             />
-          )}
-          
-          <Tooltip formatter={(value) => [`${value}/100`, 'Rating']} />
-          <Legend />
-        </RadarChart>
-      </ResponsiveContainer>
+            
+            {comparisonPlayer && (
+              <Radar
+                name={comparisonPlayer.name}
+                dataKey={comparisonPlayer.name}
+                stroke={comparisonColor}
+                fill={comparisonColor}
+                fillOpacity={0.6}
+              />
+            )}
+            
+            <Tooltip formatter={(value) => [`${value}/100`, 'Rating']} />
+            <Legend />
+          </RadarChart>
+        </ResponsiveContainer>
+      </Box>
     </Box>
   );
 };
