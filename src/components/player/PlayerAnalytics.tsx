@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Center, Heading, SimpleGrid, Spinner, Tabs } from '@chakra-ui/react';
+import { Box, Center, Heading, Spinner, Tabs } from '@chakra-ui/react';
 import { Player, MatchResult } from '../../types';
 import { WinLossChart } from '../charts/WinLossChart';
 import { SurfaceComparisonChart } from '../charts/SurfaceComparisonChart';
@@ -36,9 +36,7 @@ export const PlayerAnalytics: React.FC<PlayerAnalyticsProps> = ({ player, matche
         <Tabs.List>
           <Tabs.Trigger value="overview">Performance Overview</Tabs.Trigger>
           <Tabs.Trigger value="attributes">Player Attributes</Tabs.Trigger>
-          <Tabs.Trigger value="history">Match History</Tabs.Trigger>
           <Tabs.Trigger value="surface">Surface Analysis</Tabs.Trigger>
-          <Tabs.Trigger value="serve/return">Serve & Return</Tabs.Trigger>
         </Tabs.List>
 
         <Tabs.Content value="overview">
@@ -61,34 +59,12 @@ export const PlayerAnalytics: React.FC<PlayerAnalyticsProps> = ({ player, matche
           </Box>
         </Tabs.Content>
         
-        <Tabs.Content value="history">
-          <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg">
-            <Heading size="md" mb={4}>Match Timeline</Heading>
-            {/* Match history */}
-          </Box>
-        </Tabs.Content>
-        
         <Tabs.Content value="surface">
           <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg">
             <Heading size="md" mb={4}>Performance by Surface</Heading>
             <SurfaceComparisonChart player={player} />
           </Box>
         </Tabs.Content>
-        
-        <Tabs.Content value="serve/return">
-          <SimpleGrid columns={{ base: 1, lg: 2 }} gap={8}>
-            <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg">
-              <Heading size="md" mb={4}>First Serve Performance</Heading>
-              {/* Chart for first serve percentage, points won, etc. */}
-            </Box>
-            
-            <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg">
-              <Heading size="md" mb={4}>Return Game</Heading>
-              {/* Chart for return points won, break points converted, etc. */}
-            </Box>
-          </SimpleGrid>
-        </Tabs.Content>
-        
       </Tabs.Root>
     </Box>
   );
