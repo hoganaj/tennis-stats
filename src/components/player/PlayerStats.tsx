@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Flex, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, Flex, Text, VStack, Span } from '@chakra-ui/react';
 import { Player, MatchResult } from '../../types';
 
 interface PlayerStatsProps {
@@ -38,11 +38,21 @@ export const PlayerStats: React.FC<PlayerStatsProps> = ({ player, recentMatches 
       <Text fontSize="2xl" fontWeight="bold">
         {value}
       </Text>
-      <Text fontSize="sm" color="gray.500">
+      <Box fontSize="sm" color="gray.500" textAlign="center">
         {helpText}
-      </Text>
+      </Box>
     </VStack>
   );
+  
+  const renderRankingChange = () => {
+    if (player.rankingChange > 0) {
+      return <Span color="green.500">{player.rankingChange}</Span>;
+    } else if (player.rankingChange < 0) {
+      return <Span color="red.500">{Math.abs(player.rankingChange)}</Span>;
+    } else {
+      return 'No change';
+    }
+  };
   
   return (
     <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg">
@@ -60,21 +70,7 @@ export const PlayerStats: React.FC<PlayerStatsProps> = ({ player, recentMatches 
         <StatItem 
           label="Current Ranking" 
           value={`#${player.ranking}`}
-          helpText={
-            <Flex align="center" justify="center">
-              {player.rankingChange > 0 ? (
-                <>
-                  <Text color="green.500">{player.rankingChange}</Text>
-                </>
-              ) : player.rankingChange < 0 ? (
-                <>
-                  <Text color="red.500">{Math.abs(player.rankingChange)}</Text>
-                </>
-              ) : (
-                'No change'
-              )}
-            </Flex>
-          }
+          helpText={renderRankingChange()}
         />
         <StatItem 
           label="Win/Loss Record" 
